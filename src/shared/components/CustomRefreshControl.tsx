@@ -12,7 +12,6 @@ const CustomRefreshControl: React.FC<CustomRefreshControlProps> = ({ refreshing 
 
     useEffect(() => {
         if (refreshing) {
-            // Rotation animation
             Animated.loop(
                 Animated.timing(rotation, {
                     toValue: 1,
@@ -22,7 +21,6 @@ const CustomRefreshControl: React.FC<CustomRefreshControlProps> = ({ refreshing 
                 }),
             ).start();
 
-            // Pulse animation
             Animated.loop(
                 Animated.sequence([
                     Animated.timing(scale, {

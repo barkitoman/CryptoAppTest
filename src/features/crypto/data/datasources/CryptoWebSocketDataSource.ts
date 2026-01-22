@@ -23,13 +23,11 @@ class CryptoWebSocketDataSource {
 
     connect() {
         if (this.ws?.readyState === WebSocket.OPEN) {
-            console.log('✅ WebSocket already connected');
             return;
         }
 
         this.isIntentionallyClosed = false;
         this.updateConnectionStatus(ConnectionStatus.CONNECTING);
-        console.log('🔄 Connecting to WebSocket:', this.WS_URL);
 
         try {
             this.ws = new WebSocket(this.WS_URL);
@@ -80,8 +78,6 @@ class CryptoWebSocketDataSource {
     }
 
     private handleOpen() {
-        console.log('✅ WebSocket connected successfully!');
-        console.log('📊 Real-time price updates are now active');
         this.reconnectAttempts = 0;
         this.reconnectDelay = 1000;
         this.updateConnectionStatus(ConnectionStatus.CONNECTED);
@@ -100,7 +96,7 @@ class CryptoWebSocketDataSource {
                 this.notifyPriceUpdate(priceUpdate);
             });
         } catch {
-            console.log('socket onerror');
+            // Silently ignore parsing errors
         }
     }
 
@@ -143,7 +139,7 @@ class CryptoWebSocketDataSource {
             try {
                 callback(update);
             } catch {
-                console.log('Error parsing WebSocket message');
+
             }
         });
     }

@@ -16,17 +16,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const systemScheme = useColorScheme();
     const [theme, setTheme] = React.useState<Theme>(systemScheme === 'dark' ? 'dark' : 'light');
 
-    // Debug: Log system scheme on mount
-    React.useEffect(() => {
-        console.log('🎨 System color scheme detected:', systemScheme);
-        console.log('🎨 Current theme:', theme);
-    }, []);
-
     // Update theme when system scheme changes
     React.useEffect(() => {
-        console.log('🎨 System scheme changed to:', systemScheme);
         const newTheme = systemScheme === 'dark' ? 'dark' : 'light';
-        console.log('🎨 Setting theme to:', newTheme);
         setTheme(newTheme);
     }, [systemScheme]);
 

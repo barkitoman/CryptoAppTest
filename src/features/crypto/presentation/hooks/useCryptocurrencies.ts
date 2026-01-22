@@ -11,13 +11,10 @@ const PAGE_SIZE = 50;
 export const useCryptocurrencies = () => {
     const dispatch = useAppDispatch();
 
-    console.log('🎯 useCryptocurrencies hook initializing (Infinite Scroll mode)...');
-
     const query = useInfiniteQuery<Cryptocurrency[], Error>({
         queryKey: ['cryptocurrencies'],
         queryFn: async ({ pageParam = 1 }) => {
             const start = pageParam as number;
-            console.log(`🚀 Fetching page starting at ${start}...`);
 
             try {
                 const useCase = container.resolve<GetCryptocurrenciesUseCase>(
@@ -51,7 +48,6 @@ export const useCryptocurrencies = () => {
 
     useEffect(() => {
         if (query.error) {
-            console.error('❌ Query error detected:', query.error);
             const errorMessage =
                 query.error instanceof Error
                     ? query.error.message

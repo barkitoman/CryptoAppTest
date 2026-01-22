@@ -76,14 +76,12 @@ export class LocalAuthDataSource {
         };
 
         await AsyncStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(session));
-        console.log('✅ User registered:', newUser.email);
 
         return session;
     }
 
     async logout(): Promise<void> {
         await AsyncStorage.removeItem(STORAGE_KEYS.SESSION);
-        console.log('✅ User logged out');
     }
 
     async getCurrentSession(): Promise<AuthSession | null> {
@@ -95,7 +93,6 @@ export class LocalAuthDataSource {
         // Verificar si expiró
         if (session.expiresAt < Date.now()) {
             await this.logout();
-            console.log('⚠️ Session expired');
             return null;
         }
 

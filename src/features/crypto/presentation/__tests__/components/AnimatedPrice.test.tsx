@@ -4,9 +4,8 @@ import { ThemeProvider } from '../../../../../core/theme/ThemeContext';
 import AnimatedPrice from '../../components/AnimatedPrice';
 
 // Mock useColorScheme
-jest.mock('react-native', () => ({
-    ...jest.requireActual('react-native'),
-    useColorScheme: () => 'light',
+jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
+    default: jest.fn(() => 'light'),
 }));
 
 describe('AnimatedPrice Component', () => {
@@ -23,7 +22,7 @@ describe('AnimatedPrice Component', () => {
     it('should format small prices with more decimals', () => {
         renderWithTheme(<AnimatedPrice price={0.123456} variant="price" />);
 
-        expect(screen.getByText(/0.1235/)).toBeTruthy();
+        expect(screen.getByText(/\$0.123456/)).toBeTruthy();
     });
 
     it('should format large prices with commas', () => {

@@ -8,7 +8,7 @@ import cryptoReducer from '../../slices/cryptoSlice';
 // Mock the container
 jest.mock('../../../../../core/di/container', () => ({
     container: {
-        get: jest.fn(() => ({
+        resolve: jest.fn(() => ({
             execute: jest.fn().mockResolvedValue([
                 {
                     id: 'bitcoin',
@@ -22,6 +22,7 @@ jest.mock('../../../../../core/di/container', () => ({
                     priceUsd: 50000,
                     changePercent24Hr: 5.5,
                     vwap24Hr: 49500,
+                    lastUpdated: Date.now(),
                 },
             ]),
         })),

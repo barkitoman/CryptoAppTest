@@ -12,18 +12,13 @@ const OfflineIndicator: React.FC = () => {
 
     useEffect(() => {
         const updateConnectivity = (state: any) => {
-            // RELAXED LOGIC: Only consider offline if isConnected is specifically false.
-            // isInternetReachable is often flakey in emulators/dev environments.
             const offline = state.isConnected === false;
-
-            console.log(`[OfflineIndicator] Connectivity update: isConnected=${state.isConnected}, isInternetReachable=${state.isInternetReachable} -> Showing Indicator? ${offline}`);
 
             if (debounceTimer.current) {
                 clearTimeout(debounceTimer.current);
             }
 
             if (offline) {
-                // Wait 2 seconds before showing the offline indicator
                 debounceTimer.current = setTimeout(() => {
                     setIsOffline(true);
                     Animated.timing(fadeAnim, {
@@ -33,7 +28,6 @@ const OfflineIndicator: React.FC = () => {
                     }).start();
                 }, 2000);
             } else {
-                // Immediately hide when online
                 setIsOffline(false);
                 Animated.timing(fadeAnim, {
                     toValue: 0,

@@ -37,7 +37,6 @@ const CryptoDetailScreen: React.FC<CryptoDetailScreenProps> = ({ crypto, onBack 
             setHistoricalData(data);
         } catch (error) {
             console.error('Error loading historical data:', error);
-            // Generate mock data as fallback
             const mockData = generateMockHistoricalData(crypto.priceUsd, days);
             setHistoricalData(mockData);
         } finally {
@@ -45,11 +44,10 @@ const CryptoDetailScreen: React.FC<CryptoDetailScreenProps> = ({ crypto, onBack 
         }
     };
 
-    // ... helper functions omitted for brevity, they are unchanged ...
     const generateMockHistoricalData = (currentPrice: number, days: number) => {
         const data: { timestamp: number; price: number }[] = [];
         const now = Date.now();
-        const interval = (days * 24 * 60 * 60 * 1000) / 50; // 50 data points
+        const interval = (days * 24 * 60 * 60 * 1000) / 50;
 
         for (let i = 0; i < 50; i++) {
             const timestamp = now - (50 - i) * interval;
