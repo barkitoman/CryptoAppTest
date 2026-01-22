@@ -34,24 +34,24 @@ describe('GetCryptocurrenciesUseCase', () => {
 
         mockRepository.getCryptocurrencies.mockResolvedValue(mockCryptos);
 
-        const result = await useCase.execute(100);
+        const result = await useCase.execute(1, 100);
 
-        expect(mockRepository.getCryptocurrencies).toHaveBeenCalledWith(100);
+        expect(mockRepository.getCryptocurrencies).toHaveBeenCalledWith(1, 100);
         expect(result).toEqual(mockCryptos);
     });
 
-    it('should use default limit when not provided', async () => {
+    it('should use default values of start=1 and limit=50 when not provided', async () => {
         mockRepository.getCryptocurrencies.mockResolvedValue([]);
 
         await useCase.execute();
 
-        expect(mockRepository.getCryptocurrencies).toHaveBeenCalledWith(200);
+        expect(mockRepository.getCryptocurrencies).toHaveBeenCalledWith(1, 50);
     });
 
     it('should propagate errors from repository', async () => {
         const error = new Error('Network error');
         mockRepository.getCryptocurrencies.mockRejectedValue(error);
 
-        await expect(useCase.execute(100)).rejects.toThrow('Network error');
+        await expect(useCase.execute(1, 100)).rejects.toThrow('Network error');
     });
 });

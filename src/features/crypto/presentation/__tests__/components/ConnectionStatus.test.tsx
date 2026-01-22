@@ -5,31 +5,31 @@ import { ConnectionStatus as ConnectionStatusEnum } from '../../../domain/entiti
 
 describe('ConnectionStatus Component', () => {
     it('should render green dot when connected', () => {
-        const { container } = render(
+        const { toJSON } = render(
             <ConnectionStatus status={ConnectionStatusEnum.CONNECTED} />
         );
-        expect(container).toBeTruthy();
+        expect(toJSON()).toBeTruthy();
     });
 
     it('should render yellow dot when connecting', () => {
-        const { container } = render(
+        const { toJSON } = render(
             <ConnectionStatus status={ConnectionStatusEnum.CONNECTING} />
         );
-        expect(container).toBeTruthy();
+        expect(toJSON()).toBeTruthy();
     });
 
     it('should render gray dot when disconnected', () => {
-        const { container } = render(
+        const { toJSON } = render(
             <ConnectionStatus status={ConnectionStatusEnum.DISCONNECTED} />
         );
-        expect(container).toBeTruthy();
+        expect(toJSON()).toBeTruthy();
     });
 
     it('should render red dot when error', () => {
-        const { container } = render(
+        const { toJSON } = render(
             <ConnectionStatus status={ConnectionStatusEnum.ERROR} />
         );
-        expect(container).toBeTruthy();
+        expect(toJSON()).toBeTruthy();
     });
 
     it('should render without crashing for all status types', () => {

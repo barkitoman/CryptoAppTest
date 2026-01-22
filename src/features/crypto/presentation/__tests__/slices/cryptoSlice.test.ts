@@ -38,6 +38,7 @@ describe('cryptoSlice', () => {
                     priceUsd: 50000,
                     changePercent24Hr: 5.5,
                     vwap24Hr: 49500,
+                    lastUpdated: Date.now(),
                 },
             ];
 
@@ -67,6 +68,7 @@ describe('cryptoSlice', () => {
                         priceUsd: 50000,
                         changePercent24Hr: 5.5,
                         vwap24Hr: 49500,
+                        lastUpdated: Date.now(),
                     },
                 },
             };
@@ -140,25 +142,28 @@ describe('cryptoSlice', () => {
                         priceUsd: 50000,
                         changePercent24Hr: 5.5,
                         vwap24Hr: 49500,
+                        lastUpdated: Date.now(),
                     },
                     ethereum: {
                         id: 'ethereum',
                         rank: 2,
                         symbol: 'ETH',
                         name: 'Ethereum',
-                        supply: 120000000,
-                        maxSupply: null,
+                        supply: 110000000,
+                        maxSupply: undefined,
                         marketCapUsd: 500000000,
-                        volumeUsd24Hr: 30000000,
-                        priceUsd: 3000,
-                        changePercent24Hr: -2.3,
-                        vwap24Hr: 3050,
+                        volumeUsd24Hr: 200000000,
+                        priceUsd: 2000, // Lower price
+                        changePercent24Hr: -2,
+                        vwap24Hr: 2050,
+                        lastUpdated: Date.now(),
                     },
                 },
                 connectionStatus: ConnectionStatus.CONNECTED,
                 isLoading: false,
                 error: null,
                 lastUpdate: Date.now(),
+                favorites: [],
             },
         };
 

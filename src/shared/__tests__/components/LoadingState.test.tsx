@@ -4,18 +4,17 @@ import LoadingState from '../../components/LoadingState';
 
 describe('LoadingState Component', () => {
     it('should render loading indicator', () => {
-        const { container } = render(<LoadingState />);
-        expect(container).toBeTruthy();
+        const { toJSON } = render(<LoadingState />);
+        expect(toJSON()).toBeTruthy();
     });
 
-    it('should render with custom message', () => {
-        const { getByText } = render(<LoadingState message="Loading data..." />);
-        expect(getByText('Loading data...')).toBeTruthy();
+    it('should render loading message', () => {
+        const { getByText } = render(<LoadingState />);
+        expect(getByText('Loading cryptocurrencies...')).toBeTruthy();
     });
 
-    it('should render without message', () => {
-        const { queryByText } = render(<LoadingState />);
-        // Should not have any text when no message is provided
+    it('should rendert compact variant without text', () => {
+        const { queryByText } = render(<LoadingState variant="compact" />);
         expect(queryByText(/./)).toBeFalsy();
     });
 });

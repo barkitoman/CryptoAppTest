@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { StyleSheet, TextInput, RefreshControl, View } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { Cryptocurrency } from '../../domain/entities/Cryptocurrency';
 import { useCryptocurrencies } from '../hooks/useCryptocurrencies';
 import { useWebSocketPrices } from '../hooks/useWebSocketPrices';
@@ -31,9 +31,12 @@ const CryptoDashboardScreen: React.FC<CryptoDashboardScreenProps> = ({ onLogout 
     const [selectedCrypto, setSelectedCrypto] = useState<Cryptocurrency | null>(null);
 
     const {
-        data: cryptocurrencies = [],
+        cryptocurrencies,
         isLoading: isQueryLoading,
         isFetching,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
         error: queryError,
         refetch,
     } = useCryptocurrencies();
@@ -66,8 +69,8 @@ const CryptoDashboardScreen: React.FC<CryptoDashboardScreenProps> = ({ onLogout 
         setSelectedCrypto(crypto);
     }, []);
 
-    const renderItem = useCallback(
-        ({ item }: { item: Cryptocurrency }) => (
+    const renderItem: ListRenderItem<Cryptocurrency> = useCallback(
+        ({ item }) => (
             <CryptoListItem item={item} onPress={handleItemPress} />
         ),
         [handleItemPress],
@@ -89,10 +92,25 @@ const CryptoDashboardScreen: React.FC<CryptoDashboardScreenProps> = ({ onLogout 
         refetch();
     }, [refetch]);
 
+    const renderFooter = useCallback(() => {
+        if (!isFetchingNextPage) return null;
+        return (
+            <View style={styles.footerLoader}>
+                <LoadingState variant="compact" />
+            </View>
+        );
+    }, [isFetchingNextPage]);
+
+    const handleLoadMore = useCallback(() => {
+        if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+        }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
     const refreshControl = useMemo(
         () => (
             <RefreshControl
-                refreshing={isFetching}
+                refreshing={isFetching && !isFetchingNextPage}
                 onRefresh={handleRefresh}
                 tintColor={colors.tint}
                 title=""
@@ -101,7 +119,7 @@ const CryptoDashboardScreen: React.FC<CryptoDashboardScreenProps> = ({ onLogout 
                 progressBackgroundColor={colors.card}
             />
         ),
-        [isFetching, handleRefresh, colors.tint, colors.card],
+        [isFetching, isFetchingNextPage, handleRefresh, colors.tint, colors.card],
     );
 
     if (selectedCrypto) {
@@ -188,6 +206,9 @@ const CryptoDashboardScreen: React.FC<CryptoDashboardScreenProps> = ({ onLogout 
                 contentContainerStyle={styles.listContent}
                 refreshControl={refreshControl}
                 ListEmptyComponent={emptyComponent}
+                ListFooterComponent={renderFooter}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
                 drawDistance={200}
             />
         </View>
@@ -243,6 +264,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 48,
+    },
+    footerLoader: {
+        paddingVertical: 24,
+        alignItems: 'center',
     },
 });
 

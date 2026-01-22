@@ -17,25 +17,25 @@ const TestComponent = () => {
 
 describe('ThemeContext', () => {
     it('should provide theme context to children', () => {
-        const { getByTestID } = render(
+        const screen = render(
             <ThemeProvider>
                 <TestComponent />
             </ThemeProvider>
         );
 
-        expect(getByTestID('theme')).toBeTruthy();
-        expect(getByTestID('isDark')).toBeTruthy();
-        expect(getByTestID('primaryColor')).toBeTruthy();
+        expect(screen.getByTestId('theme')).toBeTruthy();
+        expect(screen.getByTestId('isDark')).toBeTruthy();
+        expect(screen.getByTestId('primaryColor')).toBeTruthy();
     });
 
     it('should provide light theme colors when system is light', () => {
-        const { getByTestID } = render(
+        const screen = render(
             <ThemeProvider>
                 <TestComponent />
             </ThemeProvider>
         );
 
-        const primaryColor = getByTestID('primaryColor');
+        const primaryColor = screen.getByTestId('primaryColor');
         // Light theme primary color
         expect(primaryColor.props.children).toBeTruthy();
     });
@@ -53,13 +53,13 @@ describe('ThemeContext', () => {
     });
 
     it('should provide isDark boolean based on theme', () => {
-        const { getByTestID } = render(
+        const screen = render(
             <ThemeProvider>
                 <TestComponent />
             </ThemeProvider>
         );
 
-        const isDark = getByTestID('isDark');
+        const isDark = screen.getByTestId('isDark');
         expect(['true', 'false']).toContain(isDark.props.children);
     });
 });

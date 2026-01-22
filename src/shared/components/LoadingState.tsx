@@ -2,7 +2,19 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import Text from './Text';
 
-const LoadingState: React.FC = () => {
+interface LoadingStateProps {
+    variant?: 'full' | 'compact';
+}
+
+const LoadingState: React.FC<LoadingStateProps> = ({ variant = 'full' }) => {
+    if (variant === 'compact') {
+        return (
+            <View style={styles.compact}>
+                <ActivityIndicator size="small" color="#FFFFFF" />
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <ActivityIndicator size="large" color="#FFFFFF" />
@@ -42,6 +54,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#1E293B',
         borderRadius: 12,
         marginBottom: 8,
+    },
+    compact: {
+        padding: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 

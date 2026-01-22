@@ -8,8 +8,8 @@ export class CryptoRepositoryImpl implements CryptoRepository {
         private cmcDataSource = CoinMarketCapDataSource,
     ) { }
 
-    async getCryptocurrencies(limit: number = 200): Promise<Cryptocurrency[]> {
-        return this.cmcDataSource.getCryptocurrencies(limit);
+    async getCryptocurrencies(start: number = 1, limit: number = 50): Promise<Cryptocurrency[]> {
+        return this.cmcDataSource.getCryptocurrencies(start, limit);
     }
 
     async getHistoricalPrices(id: string, days: number): Promise<HistoricalPrice[]> {

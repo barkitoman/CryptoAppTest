@@ -36,9 +36,9 @@ describe('CryptoRepositoryImpl', () => {
 
             mockDataSource.getCryptocurrencies.mockResolvedValue(mockCryptos);
 
-            const result = await repository.getCryptocurrencies(100);
+            const result = await repository.getCryptocurrencies(1, 100);
 
-            expect(mockDataSource.getCryptocurrencies).toHaveBeenCalledWith(100);
+            expect(mockDataSource.getCryptocurrencies).toHaveBeenCalledWith(1, 100);
             expect(result).toEqual(mockCryptos);
         });
 
@@ -46,15 +46,15 @@ describe('CryptoRepositoryImpl', () => {
             const error = new Error('Network error');
             mockDataSource.getCryptocurrencies.mockRejectedValue(error);
 
-            await expect(repository.getCryptocurrencies(100)).rejects.toThrow('Network error');
+            await expect(repository.getCryptocurrencies(1, 100)).rejects.toThrow('Network error');
         });
 
-        it('should use default limit of 200 when not specified', async () => {
+        it('should use default values of start=1 and limit=50 when not specified', async () => {
             mockDataSource.getCryptocurrencies.mockResolvedValue([]);
 
             await repository.getCryptocurrencies();
 
-            expect(mockDataSource.getCryptocurrencies).toHaveBeenCalledWith(200);
+            expect(mockDataSource.getCryptocurrencies).toHaveBeenCalledWith(1, 50);
         });
     });
 

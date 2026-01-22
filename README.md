@@ -1,122 +1,111 @@
 # CryptoApp 🚀
 
-A modern, high-performance cryptocurrency tracking application built with React Native and Expo, following Clean Architecture and Feature-Sliced Design principles.
+Una aplicación moderna y de alto rendimiento para el seguimiento de criptomonedas construida con **React Native** y **Expo**, siguiendo los principios de **Clean Architecture** y **Feature-Sliced Design (FSD)**.
 
-## ✨ Features
+## ✨ Características
 
-- **Real-time Price Tracking**: Live updates via CoinCap WebSockets.
-- **Comprehensive Market Data**: Integration with CoinGecko and CoinMarketCap APIs.
-- **Historical Charts**: Visualize price behavior over different time periods.
-- **Automatic Theme Detection**: System-wide Dark/Light mode support.
-- **Secure Configuration**: Environment-based configuration and feature flags.
-- **High Performance**: Optimized list rendering with FlashList and smooth animations with Reanimated.
+- **Seguimiento en Tiempo Real**: Actualizaciones en vivo mediante WebSockets de CoinCap.
+- **Datos de Mercado Completos**: Integración con las APIs de CoinGecko y CoinMarketCap.
+- **Gráficos Históricos**: Visualización del comportamiento de precios en diferentes periodos de tiempo.
+- **Modo Oscuro/Claro**: Detección automática del tema del sistema.
+- **Persistencia Offline**: Acceso a datos cacheados incluso sin conexión a internet.
+- **Alto Rendimiento**: Renderizado optimizado con FlashList y animaciones fluidas con Reanimated.
 
-## 🏗️ Architecture & Data Flow
+## 🏗️ Decisiones Arquitectónicas
 
-The project follows a modular architecture based on **Clean Architecture** and **Feature-Sliced Design**. This ensures that business logic is decoupled from UI and external APIs.
+El proyecto utiliza una combinación de **Clean Architecture** y **Feature-Sliced Design (FSD)** para garantizar que la lógica de negocio sea independiente de la interfaz de usuario y de los servicios externos.
+
+### Capas del Proyecto:
+1.  **Capa de Dominio (Domain)**: Contiene las entidades, las interfaces de los repositorios y los Casos de Uso. Es el corazón de la app y no depende de ninguna otra capa.
+2.  **Capa de Datos (Data)**: Implementa los repositorios y gestiona las fuentes de datos (APIs REST, WebSockets, Almacenamiento Local).
+3.  **Capa de Presentación (Presentation)**: Contiene los componentes de UI, pantallas, hooks personalizados y la gestión de estado con **Redux**.
+4.  **Capa Core**: Infraestructura común, configuración de temas, navegación e inyección de dependencias.
 
 ```mermaid
 graph TD
-    subgraph "Presentation Layer (React Native)"
+    subgraph "Capa de Presentación (React Native)"
         A[Screens] --> B[Hooks]
         B --> C[Redux Slices]
     end
 
-    subgraph "Domain Layer (Business Logic)"
+    subgraph "Capa de Dominio (Lógica de Negocio)"
         C --> D[Use Cases]
-        D --> E[Repository Interfaces]
+        D --> E[Interfaces de Repositorio]
     end
 
-    subgraph "Data Layer (Infrastructure)"
+    subgraph "Capa de Datos (Infraestructura)"
         E --> F[Repository Impls]
         F --> G[Data Sources]
-        G --> H[(Remote APIs / Local Storage)]
+        G --> H[(APIs Remotas / Almacenamiento Local)]
     end
 
     H -- Mapping --> G
     G -- Entities --> D
 ```
 
-## � Security & Configuration
+## 🔐 Seguridad y Configuración
 
-The app uses environment variables to manage sensitive data and toggle features via `src/core/config/env.ts`.
+La aplicación gestiona datos sensibles y banderas de funcionalidades a través de variables de entorno (`src/core/config/env.ts`).
 
-### Authentication Strategy (Roadmap)
-- **JWT Authentication**: Transitioning to a production-grade flow using Access Tokens (stored in memory/secure memory) and Refresh Tokens (stored in `SecureStore`) to minimize XSS/injection risks.
-- **Biometric Identity**: Implementation of `expo-local-authentication` for FaceID/TouchID as a fallback for secure session restoration.
+### Estrategia de Autenticación:
+- Implementamos una estructura preparada para **JWT**.
+- Uso de **SecureStore** para el almacenamiento de tokens sensibles.
+- Soporte planificado para **Autenticación Biométrica** (FaceID/TouchID).
 
-### Environment Setup
+## 🚀 Cómo Correr el Proyecto
 
-1. Copy the example environment file:
-   ```bash
-   cp .env.example .env.development
-   ```
-2. Fill in your API keys in `.env.development`:
-   - `EXPO_PUBLIC_COINMARKETCAP_API_KEY`: Your CMC Pro API Key.
+Sigue estos pasos para configurar el entorno de desarrollo:
 
-### Feature Flags
+1.  **Instalar dependencias**:
+    ```bash
+    npm install
+    ```
+2.  **Configurar variables de entorno**:
+    Copia el archivo de ejemplo y añade tus claves de API:
+    ```bash
+    cp .env.example .env.development
+    ```
+3.  **Iniciar el servidor de desarrollo**:
+    ```bash
+    npx expo start
+    ```
+4.  **Ejecutar en un emulador**:
+    - Presiona `i` para iOS.
+    - Presiona `a` para Android.
 
-Available flags in `.env` files:
-- `EXPO_PUBLIC_ENABLE_CMC`: Toggle CoinMarketCap integration.
-- `EXPO_PUBLIC_ENABLE_WEBSOCKET`: Enable/Disable real-time updates.
-- `EXPO_PUBLIC_ENABLE_CHARTS`: Toggle historical charts visibility.
+## 🧪 Pruebas (Testing)
 
-## 🧪 Testing
+El proyecto utiliza **Jest** y **React Native Testing Library**.
 
-The project uses Jest and React Native Testing Library.
-
-### Running Tests
 ```bash
-# Run all tests
+# Correr todos los tests
 npm test
 
-# Run tests with coverage report
+# Correr tests con reporte de cobertura
 npm run test:coverage
-
-# Run tests and open HTML report
-./run-tests-with-report.sh
 ```
 
-## 🚀 Getting Started
+## �️ Stack Tecnológico
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Set up your environment variables (see Configuration section).
-3. Start the development server:
-   ```bash
-   npx expo start
-   ```
+- **Framework**: Expo / React Native
+- **Estado**: Redux Toolkit
+- **Data Fetching**: TanStack Query (v5)
+- **Animaciones**: React Native Reanimated
+- **Persistencia**: AsyncStorage + Persist Client de TanStack Query
 
-## 🛠️ Tech Stack & DX
+## 📶 Modo Offline Avanzado
 
-- **State & Data**: Redux Toolkit, TanStack Query (v5).
-- **UI & UX**: FlashList (high-performance lists), Reanimated (60fps animations).
-- **Quality Assurance**: Jest, React Native Testing Library.
+- **Persistencia**: Los datos se guardan en el disco local automáticamente.
+- **SWR (Stale-While-Revalidate)**: La app muestra los datos cacheados instantáneamente mientras se actualizan en segundo plano.
+- **Indicador de Conexión**: Un componente `OfflineIndicator` sutil notifica al usuario cuando no hay red.
 
-### Developer Experience (DX)
-- **Husky & Lint-staged**: Automated linting and testing before every commit.
-- **Conventional Commits**: Standardized commit messages for clear history and automated changelogs.
-- **Dependency Injection**: Decoupled initialization using a custom lightweight DI container (`src/core/di`).
+## � ¿Qué mejoraría con más tiempo?
 
-## 📶 Advanced Offline Mode
+Si tuviera más tiempo de desarrollo, me enfocaría en los siguientes puntos para llevar la app a un nivel de producción masivo:
 
-- **Persistence**: Using `@tanstack/react-query-persist-client` with `AsyncStorage`.
-- **Cache Logic**: implements "Stale-While-Revalidate" (SWR) fetching.
-- **Connectivity**: Real-time awareness with `@react-native-community/netinfo` and a debounced `OfflineIndicator` to avoid UI flickering during transitions.
-
-## 🚀 Future Roadmap
-
-### 🔐 High Security
-- **OAuth2/JWT**: Move from mock local auth to a hardened JWT flow with automatic token refreshing.
-- **Secure Persistence**: Utilize `expo-secure-store` for all sensitive cryptographic and auth data.
-
-### 📈 Pro Features
-- **Advanced Charts**: Switch to `react-native-wagmi-charts` for interactive scrubbing and candlestick views.
-- **Market Alerts**: Push notifications for price thresholds using Firebase Cloud Messaging (FCM).
-
-### 🤖 Automation & Ops
-- **GitHub Actions**: CI pipeline for automated testing and PR validation.
-- **Sentry Integration**: Real-time error tracking and performance monitoring.
-- **EAS Builds**: Automated deployment to TestFlight/Play Store via Expo Application Services
+1.  **Observabilidad**: Integrar **Sentry** para el rastreo de errores en tiempo real y **Firebase Analytics** para entender el comportamiento del usuario.
+2.  **Gráficos Interactivos**: Migrar a `react-native-wagmi-charts` para permitir interacciones táctiles (scrubbing) y vistas de velas Japonesas.
+3.  **CI/CD**: Configurar **GitHub Actions** para automatizar los tests y linting en cada PR, y **EAS Build** para distribuciones automáticas a las tiendas.
+4.  **E2E Testing**: Implementar pruebas de extremo a extremo con **Maestro** para asegurar que los flujos críticos (Login, Navegación) nunca fallen.
+5.  **Internacionalización (i18n)**: Soporte completo para múltiples idiomas (Inglés/Español).
+6.  **Micro-interacciones**: Añadir **Haptic Feedback** y Skeleton Loaders para una sensación aún más premium y fluida.

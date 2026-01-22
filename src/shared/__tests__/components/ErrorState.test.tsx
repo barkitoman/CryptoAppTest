@@ -4,14 +4,14 @@ import ErrorState from '../../components/ErrorState';
 
 describe('ErrorState Component', () => {
     it('should render error message', () => {
-        const { getByText } = render(<ErrorState message="Something went wrong" />);
+        const { getByText } = render(<ErrorState error="Something went wrong" />);
         expect(getByText('Something went wrong')).toBeTruthy();
     });
 
     it('should render retry button when onRetry is provided', () => {
         const mockRetry = jest.fn();
         const { getByText } = render(
-            <ErrorState message="Error occurred" onRetry={mockRetry} />
+            <ErrorState error="Error occurred" onRetry={mockRetry} />
         );
 
         expect(getByText('Try Again')).toBeTruthy();
@@ -20,7 +20,7 @@ describe('ErrorState Component', () => {
     it('should call onRetry when retry button is pressed', () => {
         const mockRetry = jest.fn();
         const { getByText } = render(
-            <ErrorState message="Error occurred" onRetry={mockRetry} />
+            <ErrorState error="Error occurred" onRetry={mockRetry} />
         );
 
         fireEvent.press(getByText('Try Again'));
@@ -28,7 +28,7 @@ describe('ErrorState Component', () => {
     });
 
     it('should not render retry button when onRetry is not provided', () => {
-        const { queryByText } = render(<ErrorState message="Error occurred" />);
+        const { queryByText } = render(<ErrorState error="Error occurred" />);
         expect(queryByText('Try Again')).toBeFalsy();
     });
 });

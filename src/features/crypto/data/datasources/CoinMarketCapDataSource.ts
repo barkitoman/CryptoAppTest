@@ -55,13 +55,13 @@ class CoinMarketCapDataSource {
     private baseUrl = COINMARKETCAP_API_BASE;
     private apiKey = API_Key;
 
-    async getCryptocurrencies(limit: number = 200): Promise<Cryptocurrency[]> {
+    async getCryptocurrencies(start: number = 1, limit: number = 50): Promise<Cryptocurrency[]> {
         if (this.apiKey === 'YOUR_API_KEY_HERE') {
             console.error('❌ API Key missing! Please set your CoinMarketCap API Key.');
             throw new Error('API Key missing');
         }
 
-        const url = `${this.baseUrl}/cryptocurrency/listings/latest?limit=${limit}&convert=USD`;
+        const url = `${this.baseUrl}/cryptocurrency/listings/latest?start=${start}&limit=${limit}&convert=USD`;
 
         try {
             const response = await fetch(url, {
